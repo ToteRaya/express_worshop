@@ -1,0 +1,20 @@
+{
+  "name": "express_workshop",
+  "version": "1.0.0",
+  "description": "Primer proyecto express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "express",
+    "nodejs"
+  ],
+  "author": "Raya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
