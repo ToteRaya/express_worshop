@@ -1,14 +1,17 @@
 const express = require('express');
 const pokemon = express.Router();
-const pk = require('../pokedex.json').pokemon;
+//const pk = require('../pokedex.json').pokemon;
+const db = require('../config/database')
 
 pokemon.post("/", (req, res, next) => {
     return res.status(200).send(req.body);
 });
 
-pokemon.get("/", (req, res, next) => {
+pokemon.get("/", async(req, res, next) => {
     //console.log(pk);
-    return res.status(200).send(pk);
+    const pkmn = await db.query("Select * from pokemon");
+    console.log(pkmn);
+    return res.status(200).send(pkmn);
 });
 
 pokemon.get("/:id([0-9]{1,3})", (req, res, next) => {
