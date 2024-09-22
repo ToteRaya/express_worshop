@@ -1,4 +1,4 @@
-const bodyParser = require('body-parser');//obtiene info del body
+//const bodyParser = require('body-parser');//obtiene info del body
 const morgan = require('morgan');
 const express = require('express');
 const app = express();
@@ -13,6 +13,10 @@ app.get("/", (req, res) => {
 });
 
 app.use("/pokemon",pokemon);
+
+app.use((req,res,next)=> {
+    return res.status(404).json({code:404, message: "404: Alch no tienes que estar aquí"});
+})
  
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server is running...');
