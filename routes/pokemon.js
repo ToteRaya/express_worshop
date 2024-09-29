@@ -26,6 +26,60 @@ pokemon.post("/", async(req, res, next) => {
     
 });
 
+pokemon.delete("/:id([0-9]{1,3})", async(req, res, next) =>{
+    const query = `DELETE FROM pokemon WHERE pok_id = ${req.params.id};`;
+    const rows = await db.query(query);
+    
+    if(rows.affectedRows ==1){
+        return res.status(200).json({code:200, message:'Pokemon liberado correctamente'});
+    }else{
+        return res.status(404).json({code:404, message: "404: Pokemon no encontrado"});
+    }
+});
+
+pokemon.put("/:id([0-9]{1,3})", async(req,res,next) =>{
+    const {name, height, weight, base_exp} = req.body;
+
+    if (name && height && weight && base_exp){
+        let query = "UPDATE pokemon SET ";
+        query += `pok_name = '${name}', `;
+        query += `pok_height = ${height}, `;
+        query += `pok_weight = ${weight}, `;
+        query += `pok_base_experience = ${base_exp} `;
+        query += `WHERE pok_id = ${req.params.id};`;
+
+        const rows = await db.query(query);
+        console.log(rows);
+        if (rows.affectedRows > 0){
+            return res.status(200).json({code:201, message: 'BILL\'S PC: Pokemon actualizado'});
+        }
+        
+        return res.status(500).json({code:500, message: 'BILL\'S PC: ERROR'});
+    }else{
+        return res.status(500).json({code:500, message: 'ERROR: Datos incompletos...'});
+    }
+    
+});
+
+pokemon.patch("/:id([0-9]{1,3})", async(req,res,next) =>{
+ 
+    if(req.body.name && req.params.id){
+        let query = "UPDATE pokemon SET ";
+        query += `pok_name='${req.body.name}'`;
+        query += `WHERE pok_id = ${req.params.id};`;
+
+        const rows = await db.query(query);
+        console.log(rows);
+
+        if (rows.affectedRows > 0){
+            return res.status(200).json({code:201, message: 'BILL\'S PC: Pokemon actualizado'});
+        }
+        return res.status(500).json({code:500, message: 'BILL\'S PC: ERROR'});
+    }else{
+        return res.status(500).json({code:500, message: 'ERROR: Datos incompletos...'});
+    }     
+});
+
 pokemon.get("/", async(req, res, next) => {
     //console.log(pk);
     const pkmn = await db.query("Select * from pokemon");
